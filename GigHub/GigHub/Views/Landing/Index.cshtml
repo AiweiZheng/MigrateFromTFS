@@ -1,0 +1,203 @@
+﻿@using GigHub.Core.ViewModels
+@using GigHub.Core.ViewModels.Landing
+@model LoginViewModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://fonts.googleapis.com/css?family=Khula:400,700" rel="stylesheet">
+    
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/landing/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/landing/lib")
+  
+
+</head>
+
+<body id="page-top" data-spy="scroll" data-target=".navbar-custom">
+<nav class="navbar navbar-custom navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header page-scroll">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#intro">GigHub</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse navbar-right">
+            <ul class="nav navbar-nav">
+                <li class="hidden">
+                    <a href="#page-top"></a>
+                </li>
+                <li class="page-scroll">
+                    <a href="#what">Intro</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="#screenshots">Screenshots</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="#feature">features</a>
+                </li>
+                <li class="page-scroll">
+                    <a href="#contact">Contact</a>
+                </li>
+            </ul>
+        </div><!--/.nav-collapse -->
+    </div>
+</nav>
+    
+<section id="intro" class="intro">
+
+    <div class="intro-body overlay">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h4 class="brand-heading">Welcome to Gighub</h4>
+                    <p class="intro-text">Enjoy All the Gigs we've picked for you</p>
+                    <div id="signupBlock">
+                        <a href="@Url.Action("Register","Account")" class="btn btn-success">Register</a>
+                        <div class="actions">
+                            <a href="@Url.Action("Login","Account")">Sign in</a>
+                            
+                            <a href="@Url.Action("Index","Home")">Skip to website</a>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+                
+                <div class="col-md-5 col-md-offset-1 well" id="registerForm">
+                   
+                    @Html.Partial("_RegisterForm")
+                    <div id="signin">
+                        Alread have an account ? <a href="@Url.Action("Login","Account")">Sign in</a>
+                        | <a href="@Url.Action("Index","Home")">  Skip to website</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+    
+<section id="what" class="container content-section">
+    <h2 class="text-center">Howdy! You're looking at <strong>Gighub.</strong></h2>
+    <div class="text-center">
+        <span class="byline">GigHub is a  musical network that gives you easy access to live band performance.</span>
+        <span class="byline">Follow your favoriate artists, attend any gig with a simple click.</span>
+        <span class="byline">Create your own favoriate artists list, manage your attending gigs.</span>
+        <span class="byline">It supports all kind of devices, from phones to tablets to desktops.</span>
+    </div>
+    <br />
+</section>
+    
+<section id="screenshots" class="content-section" style="background: black">
+    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
+        <!-- Indicators -->
+        <ol class="carousel-indicators">
+            <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="3"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="4"></li>
+            <li data-target="#carousel-example-generic" data-slide-to="5"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner carousel container" role="listbox">
+            
+            @{ Html.RenderPartial("_CarouselImage",new CarouselImageViewModel()
+               {
+                   Source = "../../Content/img/screenshots/main.png",
+                   Active = true,
+                   Title = "Home Page"
+               });
+            
+                Html.RenderPartial("_CarouselImage",new CarouselImageViewModel()
+                {
+                    Source = "../../Content/img/screenshots/artists.png",
+                    Title = "Artists Page"
+                });
+            
+                Html.RenderPartial("_CarouselImage",new CarouselImageViewModel()
+                {
+                    Source = "../../Content/img/screenshots/notification.png",
+                    Title = "Notifications Page"
+                });
+            
+                Html.RenderPartial("_CarouselImage",new CarouselImageViewModel()
+                {
+                    Source = "../../Content/img/screenshots/createAgig.png",
+                    Title = "Create Gig Page ( Artist role only )"
+                });
+            
+                Html.RenderPartial("_CarouselImage",new CarouselImageViewModel()
+                {
+                    Source = "../../Content/img/screenshots/mygigs.png",
+                    Title = "My Gigs Page ( Artist role only )"
+                });
+            
+                Html.RenderPartial("_CarouselImage",new CarouselImageViewModel()
+                {
+                    Source = "../../Content/img/screenshots/accounts.png",
+                    Title = "Accounts Page ( Administrator role only )"
+                });
+            }
+        </div>
+
+        <!-- Controls -->
+        <span class="forward " href="#carousel-example-generic" role="button" data-slide="next">
+        </span>
+        <span class="backward" href="#carousel-example-generic" role="button" data-slide="prev">
+        </span>
+       
+    </div>
+</section>
+  
+<section id="feature" class="content-section text-center">
+    <div class="container">
+        <h2>Features</h2>
+        @{
+            Html.RenderPartial("_FeatureItem", "Follow / Unfollow artists, attend / unattend a gig.");
+            Html.RenderPartial("_FeatureItem", "Narrow upcoming gigs result by searching artist, gig genre, gig venue.");
+            Html.RenderPartial("_FeatureItem", "Send Notifications to followers when newly gigs created.");
+            Html.RenderPartial("_FeatureItem", "Send Notifications to attendees when gigs are updated or cancelled.");
+            Html.RenderPartial("_FeatureItem", "Limit resource access for different roles ( Guest, Artist, Administrator ).");
+            Html.RenderPartial("_FeatureItem", "Add / Edit / Cancel / Reopen a gig ( Artist only ).");
+            Html.RenderPartial("_FeatureItem", "Accounts administration including change roles, activate / deactivate an account ( Administrator role only ).");
+            Html.RenderPartial("_FeatureItem", "Change content dynamically from server via jQuery AJAX.");
+            Html.RenderPartial("_FeatureItem", "Server side pagination.");
+            Html.RenderPartial("_FeatureItem", "RESTful web API Architectural style.");
+            Html.RenderPartial("_FeatureItem", "Using Entity Framework ( Code first ).");
+            Html.RenderPartial("_FeatureItem", "Using ELMAH for error management.");
+            Html.RenderPartial("_FeatureItem", "More features are coming soon!");
+        }
+    </div>
+</section>
+
+<footer id="contact">
+    <h3>Feedback or Suggestions</h3>
+    <p >Please Contact me if you have any feedback or suggestions, source code is also available on Github.</p>
+    <ul class="list-inline icons">
+        <li>
+            <a href="mailto:aiweizheng@gmail.com"><i class="fa fa-envelope-o fa-2x"></i></a>
+        </li>
+        <li>
+            <a href="https://github.com/AiweiZheng/Gighub"><i class="fa fa-github fa-2x"></i></a>
+        </li>
+    </ul>
+    <p class="copyright">Gighub &copy; Aiwei Zheng 2017, All Rights Reserved</p>
+    
+</footer>
+</body>
+
+</html>

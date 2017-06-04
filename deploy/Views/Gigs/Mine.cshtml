@@ -1,0 +1,49 @@
+﻿@model IEnumerable<GigHub.Core.Models.Gig>
+
+@{
+    ViewBag.Title = "Mine";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@Html.AntiForgeryToken()
+
+<div class="container" id="gigActions">
+    <div class="col-lg-6">
+        <h2 class="voffset4">My Upcoming Gigs</h2>
+        <ul class="gigs" id="upCommingGigs">
+            @foreach (var gig in Model)
+            {
+                if (!gig.IsCancelled)
+                {
+                    @Html.Partial("_Gig", gig);
+                }
+            }
+        </ul>
+    </div>
+    
+    <div class="col-lg-6">
+ 
+        <h2 class="voffset4">My Cancelled Gigs</h2>
+
+        <ul class="gigs voffset4" id="cancelledGigs">
+            @foreach (var gig in Model)
+            {
+                if (gig.IsCancelled)
+                {
+                    @Html.Partial("_Gig", gig);
+                }
+            }
+        </ul>
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            GigActionsController.init("#gigActions");
+        })
+    </script>
+}
+
+

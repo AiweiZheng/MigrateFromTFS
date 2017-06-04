@@ -1,0 +1,104 @@
+﻿@using GigHub.Core
+@using GigHub.Core.ViewModels
+@using Microsoft.AspNet.Identity
+@model ArtistsViewModel
+
+@foreach (var artist in Model.Artists)
+{
+    var artistWithGigs = Model.Gigs.SingleOrDefault(g => g.ArtistId == artist.Id);
+
+    <div class="row">
+        <div class="col-lg-7 col-md-8 col-sm-10 ">
+            <div class="panel panel-default" data-artist-id="@artist.Id">
+                <div class="alert alert-info panel-heading">
+                    <span class="clickable js-artist-name">@artist.Name</span>
+
+                    @if (Request.IsAuthenticated && artist.Id!=User.Identity.GetUserId())
+                    {
+                        <span>
+                            <button
+                                data-user-id="@artist.Id"
+                                class="btn btn-sm js-toggle-follow
+                                    @(Model.Followings.Contains(artist.Id) ? 
+                                          "btn-info" : "btn-default")">
+
+                                @(Model.Followings.Contains(artist.Id) ? 
+                                      AppConst.FollowingText : AppConst.UnfollowText)
+                            </button>
+                        </span> 
+                    }
+                </div>
+                <div class="panel-body">
+                    <div class="js-panel-Description">
+                        <span class="highlight">@artist.Name</span> @artist.Description
+                    </div>
+
+                    <hr/>
+
+                    <div class="container">
+                        @if (artistWithGigs == null)
+                        {
+                            <p class="highlight">No Coming Gigs</p>
+                        }
+                        else
+                        {
+                            <p class="highlight voffset3">
+                                Upcoming Gigs
+                            </p>
+                            <div class="js-gigs-container">
+                                @Html.Partial("_MoreGigs", new ArtistWithGigsViewMode
+                                {
+                                    Gigs = artistWithGigs.Gigs,
+                                    MyAttendances = Model.Attendances
+                                })
+                            </div>
+                               
+                             <div class="loadMore">
+                                  <a class="clickable js-more-gigs">>>More Gigs</a>
+                              </div>
+                         }
+                    </div>
+                </div>
+               
+            </div>
+        </div>
+ 
+    </div>
+}
+
+<script type="text/javascript">
+    
+    $(document).ready(function () { 
+
+        var togglePanelBody = function (e) {
+
+            $(this).toggleClass("@AppConst.BsHide");
+        }
+    
+        $(".panel").each(function () {
+
+            var dirty = "dirty";
+
+            if ($(this).attr(dirty) === undefined) {
+
+                var body = $(this).find(".panel-body");
+                $(this).on("click", ".js-artist-name", togglePanelBody.bind(body));
+
+                ReadMoreOrLessController.readMoreOrLess(this, $(this).find(".js-panel-Description"), dirty);
+
+                ReadMoreOrLessController.readMoreGigs({
+
+                    containerId: $(this).find(".js-gigs-container"),
+                    loadMoreId: $(this).find(".js-more-gigs"),
+                    artistId: $(this).attr("data-artist-id"),
+                    startIndex:@AppConst.CountOfGigPerLoad,
+                    sizePerLoad:@AppConst.CountOfGigPerLoad,
+                    noContent:"@HttpStatusCode.NoContent",
+                    cssHideClass: "@AppConst.BsHide"
+
+                });
+            }
+        });
+    });
+
+</script>  

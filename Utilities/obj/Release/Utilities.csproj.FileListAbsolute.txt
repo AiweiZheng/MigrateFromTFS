@@ -1,0 +1,4 @@
+C:\working_files\projects\aps.net\GigHub\Utilities\bin\Release\Utilities.dll
+C:\working_files\projects\aps.net\GigHub\Utilities\bin\Release\Utilities.pdb
+C:\working_files\projects\aps.net\GigHub\Utilities\obj\Release\Utilities.dll
+C:\working_files\projects\aps.net\GigHub\Utilities\obj\Release\Utilities.pdb

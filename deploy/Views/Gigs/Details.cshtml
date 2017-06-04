@@ -1,0 +1,40 @@
+﻿@using GigHub.Core
+@using Microsoft.AspNet.Identity
+@model GigHub.Core.ViewModels.GigDetailsViewModel
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/views/Shared/_Layout.cshtml";
+}
+
+@Html.AntiForgeryToken()
+<h2>
+    @Model.Gig.Artist.Name
+    @if (User.Identity.IsAuthenticated && @Model.Gig.ArtistId != User.Identity.GetUserId())
+    {
+        <span id="followings">
+            <button
+                class="btn btn-sm @(Model.IsFollowing ? "btn-info" : "btn-default")  js-toggle-follow"
+                data-user-id="@Model.Gig.ArtistId">
+                @(Model.IsFollowing ? AppConst.FollowingText : AppConst.UnfollowText)
+            </button>
+        </span>
+    }
+</h2>
+
+<p>Performing at @Model.Gig.Venue on @Model.Gig.DateTime.ToString("d MMM") at @Model.Gig.DateTime.ToString("HH:mm")</p>
+
+@if (Model.IsAttending)
+{
+    <p>You are going to this event.</p>
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+               FollowingController.init("#followings", "@AppConst.FollowingText", "@AppConst.UnfollowText");
+        })
+     
+    </script>
+}

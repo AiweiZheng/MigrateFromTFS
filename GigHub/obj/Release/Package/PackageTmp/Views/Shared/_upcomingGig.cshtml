@@ -1,0 +1,59 @@
+﻿@using GigHub.Core
+@using Microsoft.AspNet.Identity
+@model GigHub.Core.ViewModels.GigViewModel  
+
+<li>
+    <div class="date" data-toggle="popover"
+         data-trigger="hover"
+         data-content="Performing at @Model.Gig.Venue.Name
+                       on @Model.Gig.DateTime.ToString("d MMM yyyy") 
+                       at @Model.Gig.DateTime.ToString("HH:mm")"
+         >
+        
+        <div class="month">
+            @Model.Gig.DateTime.ToString("MMM")
+        </div>
+        <div class="day">
+            @Model.Gig.DateTime.ToString("d ")
+        </div>
+    </div>
+      <div class="details">
+          <span class="artist">
+              <a href="@Url.Action("Details", "Gigs", new {id = Model.Gig.Id})">@Model.Gig.Artist.Name</a>
+
+              @if (Model.Gig.IsCancelled)
+              {
+                  <span class="label label-warning">Cancelled</span>
+              }
+
+          </span>
+          <span class="genre">
+              @Model.Gig.Genre.Name
+          </span>
+                    
+          @if (User.Identity.IsAuthenticated && Model.Gig.IsCancelled)
+          {
+              <div class="actions">
+                  <a href="#" class="js-remove-attendance" data-gig-id="@Model.Gig.Id">
+                      Remove
+                  </a>
+              </div>
+          }
+
+          @if (User.Identity.IsAuthenticated && !Model.Gig.IsCancelled)
+          {
+              if (Model.Gig.ArtistId == User.Identity.GetUserId())
+              {
+                  <span class="myGig">My Gig</span>
+              }
+              else
+              {
+                   <button data-gig-id="@Model.Gig.Id"
+                           class="btn @(Model.Attending ? "btn-info" : "btn-default") 
+                   btn-sm  js-toggle-attendance">
+                       @(Model.Attending ? AppConst.GoingText : AppConst.NotGoingYetText)
+                   </button>
+              }
+          }
+          </div>
+</li>

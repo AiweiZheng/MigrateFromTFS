@@ -1,0 +1,44 @@
+﻿@using GigHub.Core
+@using GigHub.Core.Models
+@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+    @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="notifications">
+                <a href="#">
+                    <i class="glyphicon glyphicon-globe"></i>
+                    <span class="badge js-new-notifications-count hide"></span>
+                </a>
+            </li>
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.GetUserName() <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActiveLink("Gigs I'm Going", "Attending", "Gigs")</li>
+                    <li>@Html.ActiveLink("Artists I'm Following","Following","Artists")</li>
+
+                    @if (User.IsInRole(RoleName.Artist))
+                    {
+                        <li class="new">@Html.ActiveLink("My Gigs","Mine","Gigs")</li>
+                    }
+
+                    @if (User.IsInRole(RoleName.AccountManager))
+                    {
+                        <li class="new">@Html.ActiveLink("Accounts", "Index", "Admin")</li>
+                    }
+                    <li class="new"><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+                </ul>
+            </li>
+        </ul>
+    }
+}
+else
+{
+    <ul class="nav navbar-nav navbar-right">
+        <li>@Html.ActiveLink("Register", "Register", "Account", routerValues:null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActiveLink("Log in", "Login", "Account", routerValues: null, htmlAttributes: new { id = "loginLink" })</li>
+    </ul>
+}

@@ -1,0 +1,45 @@
+﻿@using GigHub.Core
+
+@{
+    ViewBag.Title = "Artists";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container" id="artists">
+    <h2 class="voffset4">Artists</h2>
+    <div id="content">
+    </div>
+    <div id="loading">@Html.Partial("_Spinner")</div>
+    <span id="loadMore" class="btn btn-info btn-lg">Load More </span>
+</div>
+
+
+@section scripts
+{
+    <script>
+        $(document).ready(function() {
+
+            MoreArtistsController.init(
+                {
+                    containerId: "#content",
+                    loadMoreId: "#loadMore",
+                    loadingSpinner: "#loading",
+                    sizePerLoad: @AppConst.PageSizeXs,
+                    noContent: "@HttpStatusCode.NoContent",
+                    cssHideClass: "@AppConst.BsHide"
+                }
+            );
+
+            GigsController.init("#artists",
+                "@AppConst.GoingText",
+                "@AppConst.NotGoingYetText");
+
+            FollowingController.init("#artists",
+                "@AppConst.FollowingText",
+                "@AppConst.UnfollowText");
+
+        });
+
+    </script>
+}

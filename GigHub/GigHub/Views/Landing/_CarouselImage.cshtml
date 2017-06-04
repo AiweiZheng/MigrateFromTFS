@@ -1,0 +1,9 @@
+﻿@using GigHub.Core
+@model GigHub.Core.ViewModels.Landing.CarouselImageViewModel
+   
+<div class="item  @(Model.Active ? "active" : "") " >
+    <img src="@Model.Source">
+    <div class="carousel-caption">
+        <h3>@Model.Title</h3>
+    </div>
+</div>

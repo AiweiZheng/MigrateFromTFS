@@ -1,0 +1,16 @@
+﻿<script type="text/x-template" id="roles-template">
+    <form>
+        <%
+        _.each(roles, function(role)
+
+        { %>
+        <div class="radio">
+            <input type="radio" name="optradio"
+                   class="js-change-role"
+                   js-data-role-id="<%= role.id %>"
+                   js-data-role-name="<%= role.name %>">
+            <span><%= role.name %></span>
+        </div>
+        <% }) %>
+    </form>
+</script>

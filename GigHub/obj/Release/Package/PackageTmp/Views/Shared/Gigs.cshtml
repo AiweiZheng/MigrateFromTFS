@@ -1,0 +1,82 @@
+﻿@using GigHub.Core
+@model GigHub.Core.ViewModels.GigsViewModel
+
+<h2 class="voffset3">@Model.Heading</h2>
+
+@Html.AntiForgeryToken()
+
+
+@using (Html.BeginForm("Search", "Gigs",FormMethod.Post,new {id="searchForm"}))
+{
+    <div class="form-group voffset4">
+        <div class="input-group" id="searchGigs">
+            <div class="input-group-btn js-search-panel">
+                <button type="button" class="btn btn-default dropdown-toggle form-control" data-toggle="dropdown">
+                    <span id="search_concept">@Model.SearchBy</span> <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                    <li><a href="#">@AppConst.SearchByArtist</a></li>
+                    <li><a href="#">@AppConst.SearchByGener</a></li>
+                    <li><a href="#">@AppConst.SearchByVenue</a></li>
+                    <li class="divider"></li>
+                    <li><a href="#">@AppConst.SearchAll</a></li>
+                </ul>
+            </div>
+            
+            @Html.HiddenFor(m => m.Heading)
+            @Html.HiddenFor(m => m.SearchBy, new { id = "search_by" })
+           
+            @Html.TextBoxFor(m => m.SearchTerm, new { @class = "form-control", placeholder = "Search term..." })
+            
+            <span class="input-group-btn">
+                <button class="btn btn-default form-control" type="submit">
+                    <span class="glyphicon glyphicon-search"></span>
+                </button>
+            </span>
+        </div>
+   </div>
+}
+
+<div class="container" id="content"></div>
+<div id="loading">@Html.Partial("_Spinner")</div>
+<span id="loadMore" class="btn btn-info btn-lg">Load More </span>
+
+@section scripts
+{
+        <script>
+            $(document).ready(function () {
+
+                $('[data-toggle="popover"]').popover({
+                    html: true,
+                    placement: "right",
+                    trigger: "hover"
+                });
+
+                SearchController.init({
+                    container: ".js-search-panel .dropdown-menu",
+                    searchConcept: ".js-search-panel #search_concept",
+                    searchBy: "#search_by",
+                    searchInput: "#SearchTerm",
+                    searchForm:"#searchForm"
+                });
+
+                GigsController.init("#content", "@AppConst.GoingText", "@AppConst.NotGoingYetText");
+
+                var moreGigsController = new MoreGigsController();
+                moreGigsController.init({
+                    containerId: "#content",
+                    loadMoreId: "#loadMore",
+                    loadingSpinner: "#loading",
+                    startIndex: 0,
+                    sizePerLoad: @AppConst.PageSizeSm,
+                    query: $("#SearchTerm").val(),
+                    searchBy: $("#search_by").val(),
+                    noContent: "@HttpStatusCode.NoContent",
+                    getMoreGigs: "@Model.Heading" === "@AppConst.TitleForHomeGigs"?
+                                 GigService.getMoreGigs:GigService.getMoreMyAttendingGigs,
+                    cssHideClass: "@AppConst.BsHide"
+                });
+                moreGigsController.loadMore();
+             })
+        </script>
+}

@@ -1,0 +1,27 @@
+﻿@using GigHub.Core.ViewModels
+@model GigsViewModel
+
+@foreach (var gig in Model.UpcomingGigs)
+{                      
+    <ul class="col-sm-4 gigs">
+     
+        @Html.Partial("_upcomingGig",
+            new GigViewModel
+            {
+                Attending = Model.Attendances.Contains(gig.Id),
+                Gig = gig
+            })
+       
+    </ul>
+} 
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('[data-toggle="popover"]').popover({
+            html: true,
+            placement: "right",
+            trigger: "hover"
+        });  
+    });
+</script>
